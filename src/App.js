@@ -7,6 +7,17 @@ import { useSpring, animated, config } from "react-spring";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 
+const styles = css`
+  display: inline-block;
+  .box {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 20px;
+  }
+`;
+
 const Box = ({ hue, label }) => {
   const boxLength = 300;
   //Do some trig
@@ -14,26 +25,14 @@ const Box = ({ hue, label }) => {
   let y = boxLength / (2 * Math.cos((x * Math.PI) / 180));
   y = y - 130; //Remove buffer pixels
 
-  const styles = css`
-    display: inline-block;
-    .box {
-      background-color: hsl(${hue}, 100%, 50%);
-      width: ${boxLength}px;
-      height: ${boxLength}px;
-      border: 1px solid black;
-      border-radius: 5px;
-      margin: 20px;
-      transform: rotate(${hue}deg);
-    }
-    p {
-      transform: translateY(${y}px);
-    }
-  `;
   return (
     <div css={styles}>
       <h1>{label}</h1>
-      <div className="box"></div>
-      <p>{Number.parseInt(hue)}°</p>
+      <div
+        className="box"
+        style={{ backgroundColor: `hsl(${hue}, 100%, 50%)`, transform: `rotate(${hue}deg)` }}
+      ></div>
+      <p style={{ transform: `translateY(${y}px)` }}>{Number.parseInt(hue)}°</p>
     </div>
   );
 };
