@@ -78,6 +78,7 @@ function App() {
         onChange={e => {
           setHue(Number.parseInt(e.target.value));
         }}
+        css={{ 'marginTop': '50px' }}
       ></input>
     </div>
   );
