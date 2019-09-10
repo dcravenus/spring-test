@@ -25,13 +25,29 @@ const Box = ({ hue, label }) => {
   let y = boxLength / (2 * Math.cos((x * Math.PI) / 180));
   y = y - 130; //Remove buffer pixels
 
+  const [circleSize, setCircleSize] = React.useState(300)
+
+
+  const handleClickBox = () => {
+    if (circleSize === 300) {
+      setCircleSize(0)
+    } else {
+      setCircleSize(300)
+    }
+  }
+
   return (
     <div css={styles}>
       <h1>{label}</h1>
-      <div
+      <animated.div
+        onClick={handleClickBox}
         className="box"
-        style={{ backgroundColor: `hsl(${hue}, 100%, 50%)`, transform: `rotate(${hue}deg)` }}
-      ></div>
+        style={{
+          backgroundColor: `hsl(${hue}, 100%, 50%)`,
+          transform: `rotate(${hue}deg)`,
+          clipPath: `circle(${circleSize}px at 150px 150px)`
+        }}
+      ></animated.div>
       <p style={{ transform: `translateY(${y}px)` }}>{Number.parseInt(hue)}°</p>
     </div>
   );
@@ -57,15 +73,21 @@ function App() {
   const slowSpring = useSpring(getSpringConfig(config.slow));
   const molassesSpring = useSpring(getSpringConfig(config.molasses));
 
+  const circleSpring = useSpring({ to: { size: 300 }, from: { size: 0 }, config: config.slow });
+
   return (
     <div className="App">
-      <AnimatedBox hue={defaultSpring.hue} label="Default"></AnimatedBox>
-      <AnimatedBox hue={gentleSpring.hue} label="Gentle"></AnimatedBox>
-      <AnimatedBox hue={wobblySpring.hue} label="Wobbly"></AnimatedBox>
-      <AnimatedBox hue={stiffSpring.hue} label="Stiff"></AnimatedBox>
-      <AnimatedBox hue={slowSpring.hue} label="Slow"></AnimatedBox>
-      <AnimatedBox hue={molassesSpring.hue} label="Molasses"></AnimatedBox>
-      <Box hue={hue} label="No Spring"></Box>
+      <AnimatedBox
+        hue={defaultSpring.hue}
+        label="Default"
+        circleSize={circleSpring.size}
+      ></AnimatedBox>
+      <AnimatedBox hue={gentleSpring.hue} label="Gentle" circleSize={circleSpring.size}></AnimatedBox>
+      <AnimatedBox hue={wobblySpring.hue} label="Wobbly" circleSize={circleSpring.size}></AnimatedBox>
+      <AnimatedBox hue={stiffSpring.hue} label="Stiff" circleSize={circleSpring.size}></AnimatedBox>
+      <AnimatedBox hue={slowSpring.hue} label="Slow" circleSize={circleSpring.size}></AnimatedBox>
+      <AnimatedBox hue={molassesSpring.hue} label="Molasses" circleSize={circleSpring.size}></AnimatedBox>
+      <Box hue={hue} label="No Spring" circleSize={300}></Box>
 
       <br></br>
       <br></br>
